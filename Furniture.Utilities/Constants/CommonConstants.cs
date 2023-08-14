@@ -13,5 +13,7 @@
         public const string NoAvatar = "assets/images/users/no-avatar.png";
 
         public const string MediaTypeWithQualityHeaderValue = "application/json";
+
+        public const string CreatedBySystem = "System";
     }
 }

@@ -2,29 +2,30 @@
 {
     public class Enums
     {
-        public enum DoTaskStatus
-        {
-            Open,
-            Processing,
-            Finished,
-            Completed,
-            Failed
-        }
         public enum UserStatus
         {
             Active,
             Locked
         }
-        public enum TaskStatus
+
+        public enum CategoryStatus
         {
-            ACTIVE,
-            INACTIVE
+            Active,
+            Inactive
         }
 
-        public enum DocumentType
+        public enum ProductStatus
         {
-            AVATAR,
-            DOCUMENT
+            Active,
+            Inactive
+        }
+
+        public enum OrderStatus
+        {
+            Pending,
+            Confirmed,
+            Deliveried,
+            Deleted
         }
 
         public enum SortDirection

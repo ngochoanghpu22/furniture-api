@@ -6,7 +6,7 @@ namespace Furniture.Utilities.Helpers
     {
         public static bool IsValidPhoneNumber(string phoneNumber)
         {
-            var pattern = @"^0[0-9]{9}$";
+            var pattern = @"^[0-9]{10,15}$";
             Regex rgx = new Regex(pattern);
 
             var isValid = rgx.IsMatch(phoneNumber);

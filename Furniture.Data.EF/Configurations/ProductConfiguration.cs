@@ -14,7 +14,11 @@ namespace Furniture.Data.Configurations
                                         .HasMaxLength(128)
                                         .IsRequired();
 
-            entity.Property(p => p.Image).IsUnicode(false)
+            entity.Property(p => p.ThumbnailImage).IsUnicode(false)
+                                         .HasMaxLength(256)
+                                         .IsRequired();
+
+            entity.Property(p => p.OriginalImage).IsUnicode(false)
                                          .HasMaxLength(256)
                                          .IsRequired();
 

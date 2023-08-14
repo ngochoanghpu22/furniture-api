@@ -9,7 +9,9 @@ namespace Furniture.Data.Entities
 
         public string Name { get; set; }
 
-        public string Image { get; set; }
+        public string ThumbnailImage { get; set; }
+
+        public string OriginalImage { get; set; }
 
         public decimal Price { get; set; }
 

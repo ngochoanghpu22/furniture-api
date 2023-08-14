@@ -7,5 +7,11 @@
         public const string IncorrectPassword = "Password is incorrect.";
 
         public const string LockedAccount = "Account is locked.";
+
+        public const string ExistedEmail = "Email is existed.";
+
+        public const string InvalidEmail = "Email is invalid.";
+
+        public const string InvalidPhoneNumbẻ = "Phone Number is invalid.";
     }
 }

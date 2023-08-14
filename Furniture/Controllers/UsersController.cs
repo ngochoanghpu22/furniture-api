@@ -26,18 +26,11 @@ namespace Furniture.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        [Route("signup")]
+        public async Task<IActionResult> Signup([FromBody] RegisterRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-           
-            request.IpAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-            if (request.IpAddress == "::1")
-            {
-                request.IpAddress = CommonConstants.LocalIpAddress;
-            }
+            var result = await _userService.Signup(request);
 
-            var result = await _userService.Register(request);
             if (!result.IsSuccessed)
             {
                 return BadRequest(result);
@@ -67,7 +60,7 @@ namespace Furniture.Api.Controllers
         [Route("update-user")]
         public async Task<IActionResult> UpdateUserInfo([FromBody] UserUpdateRequest request)
         {
-            request.UpdatedBy = FurnitureAuthenticationHandler.GetCurrentUser(_httpContextAccessor).UserName;
+            request.UpdatedBy = FurnitureAuthenticationHandler.GetCurrentUser(_httpContextAccessor).Name;
             var result = await _userService.UpdateInfo(request);
             if (!result.IsSuccessed)
             {
@@ -112,7 +105,7 @@ namespace Furniture.Api.Controllers
         [FurnitureAuthorize(RoleConstants.AdminRoleName, RoleConstants.UserRoleName)]
         public async Task<IActionResult> UpdateStatus([FromQuery] int userId, string status)
         {
-            var currentUserName = FurnitureAuthenticationHandler.GetCurrentUser(_httpContextAccessor).UserName;
+            var currentUserName = FurnitureAuthenticationHandler.GetCurrentUser(_httpContextAccessor).Name;
             var result = await _userService.UpdateStatus(userId, status, currentUserName);
             return Ok(result);
         }
@@ -126,7 +119,7 @@ namespace Furniture.Api.Controllers
             UserDocumentRequest request = new UserDocumentRequest
             {
                 Id = Convert.ToInt32(formData.GetParameterValue("userId")),
-                DocumentType = DocumentType.AVATAR.ToString(),
+                DocumentType = "",
                 Route = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/",
                 Stream = filePart.Data,
                 FileName = $"{Guid.NewGuid()}_{filePart.FileName}"

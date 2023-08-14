@@ -80,13 +80,14 @@ namespace Furniture.Application.Implementation
             {
                 new Claim(ClaimConstants.UserId, user.Id.ToString()),
                 new Claim(ClaimConstants.Role, user.Role),
-                new Claim(ClaimConstants.Email, user.Email)
+                new Claim(ClaimConstants.Email, user.Email),
+                new Claim(ClaimConstants.Name, user.Name)
             };
 
             var tokenConfig = new JwtSecurityToken(EnvironmentConfig.Issuer, 
                                              EnvironmentConfig.Audience,
                                              claims,
-                                             expires: DateTime.Now.AddMinutes(15),
+                                             expires: DateTime.Now.AddDays(3),
                                              signingCredentials: credentials);
 
             var token = new JwtSecurityTokenHandler().WriteToken(tokenConfig);
@@ -259,31 +260,33 @@ namespace Furniture.Application.Implementation
             return new ApiSuccessResult<PagedResult<UserDto>>(pagedResult);
         }
 
-        public async Task<ApiResult<bool>> Register(RegisterRequest request)
+        public async Task<ApiResult<bool>> Signup(RegisterRequest request)
         {
-            var user = _unitOfWork.UserRepository.FindAll(x => x.Email == request.UserName)
-                .Select(u => new UserDto()
-                {
-                    Email = u.Email
-                }).FirstOrDefault();
+            var isValidEmail = EmailHelper.IsValidEmail(request.Email);
 
-            if (user != null)
+            if (!isValidEmail)
             {
-                return new ApiErrorResult<bool>("Tài khoản đã tồn tại");
+                return new ApiErrorResult<bool>(ErrorMessageConstants.InvalidEmail);
             }
 
-            string password = Cryptography.EncryptString(request.Password);
+            var isValidPhone = PhoneNumberHelper.IsValidPhoneNumber(request.Phone);
 
-            // will using automap for this manual
-            var userEntity = new User()
+            if (!isValidPhone)
             {
-                Email = request.Email,
-                Name = request.Name,
-                Phone = request.Phone,
-                Role = request.Role,
-                Status = UserStatus.Active.ToString(),
-                Avatar = CommonConstants.NoAvatar
-            };
+                return new ApiErrorResult<bool>(ErrorMessageConstants.InvalidPhoneNumbẻ);
+            }
+
+            var isExistedUser = _unitOfWork.UserRepository.FindAll(x => x.Email == request.Email).Any();
+
+            if (isExistedUser)
+            {
+                return new ApiErrorResult<bool>(ErrorMessageConstants.ExistedEmail);
+            }
+
+            request.Password = Cryptography.EncryptString(request.Password);
+
+            var userEntity = _mapper.Map<RegisterRequest, User>(request);
+            userEntity.CreatedBy = CommonConstants.CreatedBySystem;
 
             _unitOfWork.UserRepository.Add(userEntity);
 

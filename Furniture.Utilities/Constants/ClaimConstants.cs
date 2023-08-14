@@ -6,7 +6,7 @@
 
         public const string UserId = "Id";
 
-        public const string UserName = "UserName";
+        public const string Name = "Name";
 
         public const string Email = "Email";
 

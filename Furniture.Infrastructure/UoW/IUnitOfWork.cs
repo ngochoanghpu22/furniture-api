@@ -9,6 +9,12 @@ namespace PCMS.Infrastructure.UoW
     {
         IRepository<User, int> UserRepository { get; set; }
 
+        IRepository<Category, int> CategoryRepository { get; set; }
+
+        IRepository<Product, int> ProductRepository { get; set; }
+
+        IRepository<Order, int> OrderRepository { get; set; }
+
 
         Task Commit();
     }

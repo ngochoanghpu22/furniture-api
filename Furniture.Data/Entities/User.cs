@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Furniture.Data.Interfaces;
+using Furniture.Utilities.Helpers;
 
 namespace Furniture.Data.Entities
 {

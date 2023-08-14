@@ -28,7 +28,7 @@ namespace Furniture.Application.Interfaces
 
         public async Task<string> SaveFileAsync(UserDocumentRequest request)
         {
-            var userDocumentType = request.DocumentType == DocumentType.AVATAR.ToString() ? USER_AVATAR_FOLDER_NAME : USER_DOCUMENT_FOLDER_NAME;
+            var userDocumentType = "";
             var userContentFolder = Path.Combine(_webHostEnvironment.WebRootPath, userDocumentType);
             var destPath = Path.Combine(userContentFolder, request.FileName);
 

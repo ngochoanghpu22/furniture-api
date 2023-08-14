@@ -14,7 +14,7 @@ namespace Furniture.Application.Interfaces
     public interface IUserService
     {
         Task<ApiResult<UserDto>> Authenticate(LoginRequest request);
-        Task<ApiResult<bool>> Register(RegisterRequest request);
+        Task<ApiResult<bool>> Signup(RegisterRequest request);
         Task<ApiResult<UserDto>> UpdateInfo(UserUpdateRequest request);
         Task<ApiResult<PagedResult<UserDto>>> GetUsersPaging(GetUserPagingRequest request);
         Task<ApiResult<UserDto>> GetById(int id);

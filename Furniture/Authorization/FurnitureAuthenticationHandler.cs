@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Furniture.Application.Interfaces;
-using System;
+﻿using System;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -67,14 +65,14 @@ namespace Furniture.Api.Authorization
                     userSession.UserId = claimsPrincipal.GetSpecificClaim(ClaimConstants.UserId);
                     userSession.Email = claimsPrincipal.GetSpecificClaim(ClaimConstants.Email);
                     userSession.Role = claimsPrincipal.GetSpecificClaim(ClaimConstants.Role);
-                    userSession.UserName = claimsPrincipal.GetSpecificClaim(ClaimConstants.UserName);
+                    userSession.Name = claimsPrincipal.GetSpecificClaim(ClaimConstants.Name);
                 }
 
                 return userSession;
             }
-            catch
+            catch(Exception ex)
             {
-                throw new ArgumentException("Lỗi xác thực");
+                throw new ArgumentException(ex.Message);
             }
         }
 
