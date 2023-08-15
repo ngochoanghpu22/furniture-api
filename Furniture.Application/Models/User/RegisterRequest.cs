@@ -1,8 +1,4 @@
-﻿using AutoMapper.Configuration.Annotations;
-using Furniture.Utilities.Constants;
-using Furniture.Utilities.Helpers;
-
-namespace Furniture.Application.Models.User
+﻿namespace Furniture.Application.Models.User
 {
     public class RegisterRequest
     {
