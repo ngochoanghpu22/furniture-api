@@ -14,11 +14,11 @@ using static Furniture.Utilities.Enums;
 
 namespace Furniture.Api.Controllers
 {
-    public class UsersController : BaseController
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
         }
@@ -33,6 +33,15 @@ namespace Furniture.Api.Controllers
             {
                 return BadRequest(result);
             }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("signin")]
+        public async Task<IActionResult> SignIn([FromBody] LoginRequest request)
+        {
+            var result = await _userService.SignIn(request);
 
             return Ok(result);
         }

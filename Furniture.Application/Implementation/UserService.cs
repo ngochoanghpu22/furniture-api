@@ -36,7 +36,7 @@ namespace Furniture.Application.Implementation
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApiResult<UserDto>> Authenticate(LoginRequest request)
+        public async Task<ApiResult<UserDto>> SignIn(LoginRequest request)
         {
             var user = await _unitOfWork.UserRepository.FindAll(x => x.Email == request.Email).FirstOrDefaultAsync();
 
