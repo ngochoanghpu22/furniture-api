@@ -12,6 +12,6 @@
 
         public const string InvalidEmail = "Email is invalid.";
 
-        public const string InvalidPhoneNumbẻ = "Phone Number is invalid.";
+        public const string InvalidPhoneNumber = "Phone Number is invalid.";
     }
 }

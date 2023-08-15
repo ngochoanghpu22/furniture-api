@@ -87,7 +87,7 @@ namespace Furniture.Application.Implementation
             var tokenConfig = new JwtSecurityToken(EnvironmentConfig.Issuer, 
                                              EnvironmentConfig.Audience,
                                              claims,
-                                             expires: DateTime.Now.AddDays(3),
+                                             expires: DateTime.Now.AddDays(7),
                                              signingCredentials: credentials);
 
             var token = new JwtSecurityTokenHandler().WriteToken(tokenConfig);
@@ -273,7 +273,7 @@ namespace Furniture.Application.Implementation
 
             if (!isValidPhone)
             {
-                return new ApiErrorResult<bool>(ErrorMessageConstants.InvalidPhoneNumbẻ);
+                return new ApiErrorResult<bool>(ErrorMessageConstants.InvalidPhoneNumber);
             }
 
             var isExistedUser = _unitOfWork.UserRepository.FindAll(x => x.Email == request.Email).Any();

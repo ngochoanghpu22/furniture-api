@@ -15,6 +15,8 @@ namespace PCMS.Infrastructure.UoW
 
         IRepository<Order, int> OrderRepository { get; set; }
 
+        IRepository<OrderDetail, int> OrderDetailRepository { get; set; }
+
 
         Task Commit();
     }

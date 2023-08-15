@@ -9,5 +9,9 @@ namespace Furniture.Application.Interfaces
     public interface IOrderService
     {
         Task<ApiResult<bool>> CreateOrder(List<PurchaseOrderDto> dto, ClaimModel claim);
+
+        Task<ApiResult<List<OrderDto>>> GetOrders(int userId);
+
+        Task<ApiResult<OrderDetailDto>> GetOrderDetail(int orderId);
     }
 }

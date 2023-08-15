@@ -15,5 +15,7 @@
         public const string MediaTypeWithQualityHeaderValue = "application/json";
 
         public const string CreatedBySystem = "System";
+
+        public const string DateTimeFormat = "dd/MM/yyyy hh:mm:ss";
     }
 }

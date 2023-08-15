@@ -17,11 +17,14 @@ namespace PCMS.Infrastructure.UoW
 
         public IRepository<Order, int> OrderRepository { get; set; }
 
+        public IRepository<OrderDetail, int> OrderDetailRepository { get; set; }
+
         public EFUnitOfWork(FurnitureContext context,
             IRepository<User, int> userRepository,
             IRepository<Category, int> categoryRepository,
             IRepository<Product, int> productRepository,
-            IRepository<Order, int> orderRepository
+            IRepository<Order, int> orderRepository,
+            IRepository<OrderDetail, int> orderDetailRepository
         )
 
         {
@@ -30,6 +33,7 @@ namespace PCMS.Infrastructure.UoW
             CategoryRepository = categoryRepository;
             ProductRepository = productRepository;
             OrderRepository = orderRepository;
+            OrderDetailRepository = orderDetailRepository;
         }
 
         public async Task Commit()
