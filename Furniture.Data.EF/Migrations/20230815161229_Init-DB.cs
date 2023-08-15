@@ -8,27 +8,6 @@ namespace Furniture.Data.EF.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AboutUs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(64)", unicode: false, maxLength: 64, nullable: false),
-                    Phone = table.Column<string>(type: "varchar(32)", unicode: false, maxLength: 32, nullable: false),
-                    Address = table.Column<string>(type: "varchar(512)", unicode: false, maxLength: 512, nullable: false),
-                    Logo = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "varchar(128)", unicode: false, maxLength: 128, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "varchar(128)", unicode: false, maxLength: 128, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AboutUs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -192,9 +171,6 @@ namespace Furniture.Data.EF.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AboutUs");
-
             migrationBuilder.DropTable(
                 name: "OrderDetails");
 
