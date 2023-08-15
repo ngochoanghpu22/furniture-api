@@ -18,11 +18,10 @@ namespace Furniture.Application.Implementation
     public class OrderService: IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public OrderService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<ApiResult<bool>> CreateOrder(List<PurchaseOrderDto> dto, ClaimModel claim)
@@ -59,36 +58,9 @@ namespace Furniture.Application.Implementation
             return new ApiSuccessResult<bool>(true);
         }
 
-        private async Task<ApiResult<bool>> ValidateOrder(List<PurchaseOrderDto> purchaseDto)
-        {
-            var productIds = purchaseDto.Select(p => p.ProductId).ToList();
-            var products = await _unitOfWork.ProductRepository.FindAll(p => productIds.Contains(p.Id) && p.Status == ProductStatus.Active.ToString())
-                                                        .Select(p => new ProductDto
-                                                        {
-                                                            Id = p.Id,
-                                                            Name = p.Name,
-                                                            QuantityInStock = p.QuantityInStock
-                                                        }).ToListAsync();
-
-            foreach(var item in purchaseDto)
-            {
-                var currentProduct = products.FirstOrDefault(p => p.Id == item.ProductId);
-                if (currentProduct != null)
-                {
-                    if (item.Quantity > currentProduct.QuantityInStock)
-                    {
-                        var errorMessage = $"Product '{currentProduct.Name}' are not enough quantity due to quantity in stock is: {currentProduct.QuantityInStock}";
-                        return new ApiErrorResult<bool>(errorMessage);
-                    }
-                }
-            }
-
-            return new ApiSuccessResult<bool>(true);
-        }
-
         public async Task<ApiResult<List<OrderDto>>> GetOrders(ClaimModel claim)
         {
-            // User has Admin role can view all of orders even if order was created by other user
+            // User has role is Admin can view all of orders even if order was created by other user
             var userId = Convert.ToInt32(claim.UserId);
             var orders = await _unitOfWork.OrderRepository.FindAll(o => claim.Role == RoleConstants.AdminRoleName || o.UserId == userId)
                                                           .OrderByDescending(o => o.CreatedDate)
@@ -151,6 +123,33 @@ namespace Furniture.Application.Implementation
                               }).FirstOrDefault();
 
             return await Task.Run(() => new ApiSuccessResult<OrderDetailDto>(oderDetail));
+        }
+
+        private async Task<ApiResult<bool>> ValidateOrder(List<PurchaseOrderDto> purchaseDto)
+        {
+            var productIds = purchaseDto.Select(p => p.ProductId).ToList();
+            var products = await _unitOfWork.ProductRepository.FindAll(p => productIds.Contains(p.Id) && p.Status == ProductStatus.Active.ToString())
+                                                              .Select(p => new ProductDto
+                                                              {
+                                                                  Id = p.Id,
+                                                                  Name = p.Name,
+                                                                  QuantityInStock = p.QuantityInStock
+                                                              }).ToListAsync();
+
+            foreach (var item in purchaseDto)
+            {
+                var currentProduct = products.FirstOrDefault(p => p.Id == item.ProductId);
+                if (currentProduct != null)
+                {
+                    if (item.Quantity > currentProduct.QuantityInStock)
+                    {
+                        var errorMessage = $"Product '{currentProduct.Name}' are not enough quantity due to quantity in stock is: {currentProduct.QuantityInStock}";
+                        return new ApiErrorResult<bool>(errorMessage);
+                    }
+                }
+            }
+
+            return new ApiSuccessResult<bool>(true);
         }
     }
 }
