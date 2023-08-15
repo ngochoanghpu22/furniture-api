@@ -46,14 +46,14 @@ namespace Furniture.Application.Implementation
 
         public async Task<ApiResult<bool>> Signup(RegisterRequest request)
         {
-            var isValidEmail = EmailHelper.IsValidEmail(request.Email);
+            var isValidEmail = RegexHelper.IsValidEmail(request.Email);
 
             if (!isValidEmail)
             {
                 return new ApiErrorResult<bool>(ErrorMessageConstants.InvalidEmail);
             }
 
-            var isValidPhone = PhoneNumberHelper.IsValidPhoneNumber(request.Phone);
+            var isValidPhone = RegexHelper.IsValidPhoneNumber(request.Phone);
 
             if (!isValidPhone)
             {
