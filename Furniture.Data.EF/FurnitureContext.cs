@@ -54,11 +54,11 @@ namespace Furniture.Data
                 {
                     if (item.State == EntityState.Added)
                     {
-                        changedOrAddedItem.CreatedDate = DateTime.Now;
+                        changedOrAddedItem.CreatedDate = DateTime.UtcNow;
                     }
                     else
                     {
-                        changedOrAddedItem.UpdatedDate = DateTime.Now;
+                        changedOrAddedItem.UpdatedDate = DateTime.UtcNow;
                     }
                 }
             }

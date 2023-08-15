@@ -38,12 +38,14 @@ namespace Furniture
             EnvironmentConfig.Config(Configuration);
 
             AddDbContext(services);
-            
+
             ConfigureCORS(services);
             
             RegisterDI(services);
            
             ConfigureJWT(services);
+
+            services.AddMemoryCache();
 
             // AutoMapper
             services.AddSingleton(AutoMapperConfig.RegisterMappings().CreateMapper());
@@ -149,6 +151,7 @@ namespace Furniture
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<ICacheService, CacheService>();
             services.AddTransient<IFileStorageService, FileStorageService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();

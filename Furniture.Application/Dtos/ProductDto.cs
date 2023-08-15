@@ -18,6 +18,8 @@ namespace Furniture.Application.Dtos
 
         public int QuantityInStock { get; set; }
 
+        public int QuantityOrder{ get; set; }
+
         public string Description { get; set; }
 
     }

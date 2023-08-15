@@ -41,9 +41,9 @@ namespace Furniture.Api.Controllers
         [Route("all")]
         public async Task<IActionResult> GetOrders()
         {
-            var userId = Convert.ToInt32(FurnitureAuthenticationHandler.GetCurrentUser(_httpContextAccessor).UserId);
+            var claim = FurnitureAuthenticationHandler.GetCurrentUser(_httpContextAccessor);
 
-            var orders = await _orderService.GetOrders(userId);
+            var orders = await _orderService.GetOrders(claim);
 
             return Ok(orders);
         }

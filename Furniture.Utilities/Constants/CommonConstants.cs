@@ -16,6 +16,8 @@
 
         public const string CreatedBySystem = "System";
 
-        public const string DateTimeFormat = "dd/MM/yyyy hh:mm:ss";
+        public const string DateTimeFormat = "dd/MM/yyyy HH:mm:ss";
+
+        public const string CategoryCacheKey = "CategoryCacheKey";
     }
 }

@@ -10,7 +10,7 @@ namespace Furniture.Application.Interfaces
     {
         Task<ApiResult<bool>> CreateOrder(List<PurchaseOrderDto> dto, ClaimModel claim);
 
-        Task<ApiResult<List<OrderDto>>> GetOrders(int userId);
+        Task<ApiResult<List<OrderDto>>> GetOrders(ClaimModel claim);
 
         Task<ApiResult<OrderDetailDto>> GetOrderDetail(int orderId);
     }

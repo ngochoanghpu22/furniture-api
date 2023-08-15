@@ -41,7 +41,6 @@ namespace Furniture.Application.Implementation
                 { 
                     ProductId = dtoItem.ProductId,
                     Quantity = dtoItem.Quantity,
-                    CreatedDate = DateTime.UtcNow,
                     CreatedBy = claim.Email
                 });
             };
@@ -50,7 +49,6 @@ namespace Furniture.Application.Implementation
             {
                 UserId = Convert.ToInt32(claim.UserId),
                 Status = OrderStatus.Pending.ToString(),
-                CreatedDate = DateTime.UtcNow,
                 CreatedBy = claim.Email,
                 OrderDetails = orderDetailEnties
             };
@@ -88,9 +86,11 @@ namespace Furniture.Application.Implementation
             return new ApiSuccessResult<bool>(true);
         }
 
-        public async Task<ApiResult<List<OrderDto>>> GetOrders(int userId)
+        public async Task<ApiResult<List<OrderDto>>> GetOrders(ClaimModel claim)
         {
-            var orders = await _unitOfWork.OrderRepository.FindAll(o => o.UserId == userId)
+            // User has Admin role can view all of orders even if order was created by other user
+            var userId = Convert.ToInt32(claim.UserId);
+            var orders = await _unitOfWork.OrderRepository.FindAll(o => claim.Role == RoleConstants.AdminRoleName || o.UserId == userId)
                                                           .OrderByDescending(o => o.CreatedDate)
                                                           .Select(o => new OrderDto
                                                           {
@@ -110,33 +110,47 @@ namespace Furniture.Application.Implementation
             var userEntity = _unitOfWork.UserRepository.FindAll();
             var productEntity = _unitOfWork.ProductRepository.FindAll();
 
-            var oderDetail = await (from o in orderEntity
-                               join u in userEntity
-                               on o.UserId equals u.Id
-                               join od in orderDetailEntity
-                               on o.Id equals od.OrderId
-                               join p in productEntity
-                               on od.ProductId equals p.Id
-                               select new OrderDetailDto
+            var query = (
+                          from o in orderEntity
+                          join u in userEntity
+                          on o.UserId equals u.Id
+                          join od in orderDetailEntity
+                          on o.Id equals od.OrderId
+                          join p in productEntity
+                          on od.ProductId equals p.Id
+                          select new OrderDetailDto
+                          {
+                               Id = o.Id,
+                               Email = u.Email,
+                               Name = u.Name,
+                               Phone = u.Phone,
+                               Products = new List<ProductDto>()
                                {
-                                    Id = o.Id,
-                                    Email = u.Email,
-                                    Name = u.Name,
-                                    Phone = u.Phone,
-                                    Products = new List<ProductDto>()
-                                    {
-                                        new ProductDto
-                                        {
-                                            Id = p.Id,
-                                            QuantityInStock = p.QuantityInStock,
-                                            Name = p.Name,
-                                            Price = p.Price,
-                                            ThumbnailImage = p.ThumbnailImage
-                                        }
-                                    }
-                               }).FirstOrDefaultAsync();
+                                   new ProductDto
+                                   {
+                                       Id = p.Id,
+                                       Name = p.Name,
+                                       Price = p.Price,
+                                       ThumbnailImage = p.ThumbnailImage,
+                                       QuantityInStock = p.QuantityInStock,
+                                       QuantityOrder = od.Quantity
+                                   }
+                               }
+                          }).AsEnumerable();
 
-            return new ApiSuccessResult<OrderDetailDto>(oderDetail);
+            var oderDetail = (from o in query
+                              group o by o.Id into g
+                              let firstGroup = g.FirstOrDefault()
+                              select new OrderDetailDto
+                              {
+                                  Id = g.Key,
+                                  Email = firstGroup.Email,
+                                  Name = firstGroup.Name,
+                                  Phone = firstGroup.Phone,
+                                  Products = g.SelectMany(r => r.Products).ToList()
+                              }).FirstOrDefault();
+
+            return await Task.Run(() => new ApiSuccessResult<OrderDetailDto>(oderDetail));
         }
     }
 }
