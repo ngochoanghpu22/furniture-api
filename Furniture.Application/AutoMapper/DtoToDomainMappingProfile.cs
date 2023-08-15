@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Furniture.Application.Dtos;
 using Furniture.Application.Models.User;
 using Furniture.Data.Entities;
 

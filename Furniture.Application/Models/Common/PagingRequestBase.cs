@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using static Furniture.Utilities.Enums;
-
-namespace Furniture.Application.Models.Common
+﻿namespace Furniture.Application.Models.Common
 {
     public class PagingRequestBase
     {

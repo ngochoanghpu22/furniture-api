@@ -1,16 +1,8 @@
-﻿using HttpMultipartParser;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Furniture.Api.Authorization;
 using Furniture.Application.Interfaces;
 using Furniture.Application.Models.User;
-using Furniture.Utilities.Constants;
-using Furniture.Utilities.Helpers;
-using static Furniture.Utilities.Enums;
 
 namespace Furniture.Api.Controllers
 {

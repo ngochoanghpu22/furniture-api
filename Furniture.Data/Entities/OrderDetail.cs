@@ -1,6 +1,5 @@
 ﻿using Furniture.Data.Interfaces;
 using System;
-using System.Collections.Generic;
 
 namespace Furniture.Data.Entities
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Furniture.Application.Dtos
+﻿namespace Furniture.Application.Dtos
 {
     public class PurchaseOrderDto
     {
