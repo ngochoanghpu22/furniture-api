@@ -12,6 +12,12 @@
 
         public const string InvalidEmail = "Email is invalid.";
 
+        public const string InvalidToken = "Token is invalid.";
+
+        public const string AccessDeny = "Access Deny";
+
+        public const string Forbidden = "You do not have permission to perform this action";
+
         public const string InvalidPhoneNumber = "Phone Number is invalid.";
     }
 }

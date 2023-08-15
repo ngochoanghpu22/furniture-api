@@ -29,7 +29,6 @@ namespace Furniture.Data
             modelBuilder.AddConfiguration(new UserConfiguration());
             modelBuilder.AddConfiguration(new OrderConfiguration());
             modelBuilder.AddConfiguration(new OrderDetailConfiguration());
-            modelBuilder.AddConfiguration(new AboutUsConfiguration());
         }
 
         public DbSet<Category> Categories { set; get; }
@@ -41,8 +40,6 @@ namespace Furniture.Data
         public DbSet<Order> Orders { set; get; }
 
         public DbSet<OrderDetail> OrderDetails { set; get; }
-
-        public DbSet<AboutUs> AboutUs { set; get; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {

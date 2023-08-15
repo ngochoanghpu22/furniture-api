@@ -25,7 +25,7 @@ namespace Furniture.Api.Authorization
             {
                 var unauthorizedResult = new ObjectResult(new
                 {
-                    Message = "Access Denied",
+                    Message = ErrorMessageConstants.AccessDeny,
                     StatusCode = HttpStatusCode.Unauthorized
                 });
 
@@ -35,7 +35,7 @@ namespace Furniture.Api.Authorization
 
             var forbidResult = new ObjectResult(new
             {
-                Message = "You do not have permission to perform this action",
+                Message = ErrorMessageConstants.Forbidden,
                 StatusCode = HttpStatusCode.Forbidden
             });
 

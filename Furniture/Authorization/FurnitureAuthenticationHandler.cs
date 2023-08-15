@@ -19,11 +19,11 @@ namespace Furniture.Api.Authorization
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            string token = context.HttpContext.Request.Headers["Authorization"].ToString();
+            string token = context.HttpContext.Request.Headers[CommonConstants.Authorization].ToString();
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                var responseAPI = new ApiErrorResult<string>("Lỗi xác thực");
+                var responseAPI = new ApiErrorResult<string>(ErrorMessageConstants.InvalidToken);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 context.Result = new JsonResult(responseAPI);
             }
@@ -31,19 +31,19 @@ namespace Furniture.Api.Authorization
             {
                 try
                 {
-                    string tokenValue = token.Replace("Bearer", string.Empty).Trim();
+                    string tokenValue = token.Replace(CommonConstants.BearerSchema, string.Empty).Trim();
                     ClaimsPrincipal claimsPrincipal = DecodeJWTToken(tokenValue, EnvironmentConfig.SecretKey);
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
                 }
                 catch (SecurityTokenExpiredException ex)
                 {
-                    var responseAPI = new ApiErrorResult<string>("Hết phiên đăng nhập");
+                    var responseAPI = new ApiErrorResult<string>(ex.Message);
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotAcceptable;
                     context.Result = new JsonResult(responseAPI);
                 }
                 catch (Exception ex)
                 {
-                    var responseAPI = new ApiErrorResult<string>("Lỗi xác thực");
+                    var responseAPI = new ApiErrorResult<string>(ex.Message);
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     context.Result = new JsonResult(responseAPI);
                 }
